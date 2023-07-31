@@ -1,0 +1,9 @@
+.add_btn{
+    text-align: right;
+    font-weight: bold;
+}
+a.nav-link a {
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+}
