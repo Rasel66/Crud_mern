@@ -33,6 +33,24 @@ const Details = () => {
     useEffect(()=>{
         getData();
     },[]);
+
+    const deleteUser = async(id)=>{
+        const res2 = await fetch(`/deleteUser/${id}`,{
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'}
+        })
+        const deleteUserData = await res2.json();
+        console.log(deleteUserData);
+
+        if(deleteUserData === 422 || !deleteUserData)
+        {
+            alert("Error deleting user")
+        }
+        else{
+            console.log("dleted user")
+            window.location.href = '/';
+        }
+    }
   return (
     <div className='mt-3'>
       <h4 className='mx-4'>Welcome {getUserData.name}</h4>
@@ -47,8 +65,8 @@ const Details = () => {
                                     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style={{width: 50}} alt="" />
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-sm-6">
-                                    <Link to='/edit' className='btn btn-primary mx-2 mt-1'><ModeEditIcon/></Link>
-                                    <Link to='/delete' className='btn btn-danger'><DeleteIcon/></Link>
+                                    <Link to={`/edit/${getUserData._id}`} className='btn btn-primary mx-2 mt-1'><ModeEditIcon/></Link>
+                                    <button onClick={()=>deleteUser(getUserData._id)} className='btn btn-danger'><DeleteIcon/></button>
                                 </div>
                             </div>
                             <div className="row mt-3">

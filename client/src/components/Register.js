@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 
 const Register = () => {
+
     const [input, setInput] = useState({
         name: '',
         email: '',
