@@ -1,7 +1,11 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams} from 'react-router-dom';
+
 
 const Edit = () => {
+    // const [ getUserData, setUserData ] = useState([]);
+    // console.log(getUserData);
+
     const [input, setInput] = useState({
         name: '',
         email: '',
@@ -21,6 +25,53 @@ const Edit = () => {
                 [name]:value
             }
         })
+    }
+
+    const {id} = useParams("");
+    console.log(id)
+    const getData = async () => {
+
+        const res = await fetch(`/getUser/${id}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if (res.status === 422 || !data) {
+            alert('Could not find data');
+        }
+        else {
+            setInput(data);
+            console.log("Get data");
+        }
+    }
+    useEffect(()=>{
+        getData();
+    },[]);
+
+    const updateUser = async(e)=>{
+        e.preventDefault();
+        const {name, age, email, phone, profession, address, msg} = input;
+
+        const res2 = await fetch(`/updateUser/${id}`,{
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name, age, email, phone, profession, address, msg
+            })
+        })
+        const data2 = await res2.json();
+        console.log(data2);
+
+        if (res2.status === 422 || !data2) {
+            alert('Fill the data');
+        }
+        else {
+            alert('Data added successfully');
+            window.location.href = '/';
+        }
     }
   return (
     <div className='mt-2'>
@@ -57,7 +108,7 @@ const Edit = () => {
                     <label htmlFor="msg" className='form-label'>Message</label>
                     <textarea name="msg" value={input.msg} onChange={setData} id="msg" cols="10" rows="5" className='form-control'></textarea>
                 </div>
-                <button type='submit' className='btn btn-primary mb-5'>Submit</button>
+                <button onClick={updateUser} type='submit' className='btn btn-primary mb-5'>Submit</button>
             </div>
         </form>
       </div>

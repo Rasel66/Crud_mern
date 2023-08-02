@@ -29,6 +29,26 @@ const Home = () => {
     useEffect(() => {
         getData();
     }, [])
+
+    //delete user
+
+    const deleteUser = async(id)=>{
+        const res2 = await fetch(`/deleteUser/${id}`,{
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'}
+        })
+        const deleteUserData = await res2.json();
+        console.log(deleteUserData);
+
+        if(deleteUserData === 422 || !deleteUserData)
+        {
+            alert("Error deleting user")
+        }
+        else{
+            console.log("dleted user")
+            getData();
+        }
+    }
     return (
         <div className='mt-2'>
             <div className="container">
@@ -67,8 +87,8 @@ const Home = () => {
                                                 <td>{element.msg}</td>
                                                 <td className='d-flex justify-content-between'>
                                                     <Link to={`details/${element._id}`} className='btn btn-success'><RemoveRedEyeIcon /></Link>
-                                                    <Link to='/edit' className='btn btn-primary'><ModeEditIcon /></Link>
-                                                    <button className='btn btn-danger'><DeleteIcon /></button>
+                                                    <Link to={`edit/${element._id}`} className='btn btn-primary'><ModeEditIcon /></Link>
+                                                    <button onClick={()=>deleteUser(element._id)} className='btn btn-danger'><DeleteIcon /></button>
                                                 </td>
                                             </tr>
                                     </>

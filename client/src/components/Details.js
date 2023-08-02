@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent';
 const Details = () => {
     const [ getUserData, setUserData ] = useState([]);
     console.log(getUserData);
+    
     const {id} = useParams("");
     console.log(id)
     const getData = async () => {

@@ -49,10 +49,38 @@ router.get('/getUser/:id',async(req, res)=>{
         console.log(req.params);
         const {id} = req.params;
 
-        const userIndividual = await users.findOne({_id: id})
+        const userIndividual = await users.findById({_id: id})
         res.status(201).json(userIndividual)
     } catch (error) {
         res.status(422).json(error)
+    }
+})
+
+//update user
+router.patch('/updateUser/:id',async(req, res)=>{
+    try {
+        const {id} = req.params;
+
+        const updateUser = await users.findByIdAndUpdate(id, req.body,{
+            new: true,
+        })
+        console.log(updateUser);
+        res.status(201).json(updateUser);
+    } catch (error) {
+        res.status(422).json(error);
+    }
+})
+
+//delete user
+
+router.delete('/deleteUser/:id',async(req, res)=>{
+    try {
+        const {id} = req.params;
+        const deleteUser = await users.findByIdAndDelete({_id:id})
+        console.log(deleteUser);
+        res.status(201).json(deleteUser);
+    } catch (error) {
+        res.status(422).json(error);
     }
 })
 
